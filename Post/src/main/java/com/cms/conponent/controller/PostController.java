@@ -129,6 +129,17 @@ public class PostController {
         return new ResponseEntity<>(resBean, HttpStatus.OK);
     }
 
+//    @PostMapping("/add")
+//    @Operation(summary = "[Thêm mới một Post]")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public ResponseEntity<Object> add(@RequestBody @Valid Post post) {
+//        ResponseBean resBean = new ResponseBean();
+//        resBean.setCode(HttpStatus.OK.toString());
+//        resBean.setMessage(Constant.SUCCESS);
+//        resBean.setData(service.add(post));
+//        return new ResponseEntity<>(resBean, HttpStatus.OK);
+//    }
+
 
     @PostMapping("/addMany")
     @Operation(summary = "[Thêm nhiều Post]")

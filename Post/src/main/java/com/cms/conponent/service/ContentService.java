@@ -1,11 +1,9 @@
 package com.cms.conponent.service;
-import com.cms.conponent.entity.join.Content;
+import com.cms.conponent.entity.Content;
 import com.cms.conponent.repository.ContentRepository;
-import com.cms.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,48 +27,48 @@ public class ContentService {
 //    }
 
 
-//    public Content findById(long id) {
-//        Content entity = repository.getOne(id);
-//
-//        if (entity == null)
-//
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not-found-with-id," + id);
-//
-//        return entity;
-//    }
+    public Content findById(long id) {
+        Content entity = repository.getOne(id);
+
+        if (entity == null)
+
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not-found-with-id," + id);
+
+        return entity;
+    }
 
 
-    public Content  add(Content Content){
-        Content= repository.save(Content);
-        log.info("Add " + "Content " + Content);
+    public Content  add(Content content){
+        content= repository.save(content);
+        log.info("Add " + "Content " + content);
 
-        return Content;
+        return content;
 
     }
 
-//    public Content  update(Content Content){
-//        Content entity = repository.getOne(Content.getId());
-//        if(entity == null){
-//            log.info("Not-found-with-id: "  + Content.getId());
-//        }else {
-//            Content= repository.save(Content);
-//
-//            log.info("Update " + "Content " + Content);
-//        }
-//
-//        return Content;
-//
-//    }
-//    public Content deleteById(long id){
-//        Content entity = repository.getOne(id);
-//        if(entity == null){
-//            log.info("Not-found-with-id: "  + id);
-//        }else {
-//            repository.deleteById(id);
-//        }
-//
-//        return null;
-//    }
+    public Content  update(Content content){
+        Content entity = repository.getOne(content.getId());
+        if(entity == null){
+            log.info("Not-found-with-id: "  + content.getId());
+        }else {
+            content= repository.save(content);
+
+            log.info("Update " + "Content " + content);
+        }
+
+        return content;
+
+    }
+    public Content deleteById(long id){
+        Content entity = repository.getOne(id);
+        if(entity == null){
+            log.info("Not-found-with-id: "  + id);
+        }else {
+            repository.deleteById(id);
+        }
+
+        return null;
+    }
 
 
 

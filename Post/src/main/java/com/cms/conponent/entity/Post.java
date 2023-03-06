@@ -1,9 +1,7 @@
 package com.cms.conponent.entity;
 
 
-import com.cms.conponent.entity.join.Content;
 import com.cms.conponent.entity.join.Relate;
-import com.cms.conponent.entity.join.RelationShip;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -103,7 +101,7 @@ public class Post implements Serializable{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     @Column(insertable = false, updatable = false)
-    Set<Content> contents;
+    private List<Content> contents;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     @Column(insertable = false, updatable = false)

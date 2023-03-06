@@ -1,10 +1,10 @@
 package com.cms.conponent.repository;
 
-import com.cms.conponent.entity.join.Content;
+import com.cms.conponent.entity.join.ForeignKey.RelateId;
 import com.cms.conponent.entity.join.Relate;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RelateRepository extends JpaRepository<Relate, Long> {
+public interface RelateRepository extends JpaRepository<Relate, RelateId> {
 //    String str_AnyField = "select v.*,(CASE WHEN v.status = 1 THEN 'true' else 'false' end) as \"status\" from Category v where status = 1 AND (:id is null or id = TO_NUMBER(:id) ) AND (:code is null or LOWER(code) like  CONCAT('%',CONCAT(LOWER(:code),'%')) collate binary_ai) AND (:name is null or LOWER(name) like  CONCAT('%',CONCAT(LOWER(:name),'%')) collate binary_ai) AND (:parentId is null or parentId = TO_NUMBER(:parentId) ) ";
 //    String str_AnyFieldCont = "select count(*) from Category v where status = 1 AND (:id is null or id = TO_NUMBER(:id) ) AND (:code is null or LOWER(code) like  CONCAT('%',CONCAT(LOWER(:code),'%')) collate binary_ai) AND (:name is null or LOWER(name) like  CONCAT('%',CONCAT(LOWER(:name),'%')) collate binary_ai) AND (:parentId is null or parentId = TO_NUMBER(:parentId) ) ";
 //    @Query(value = str_AnyField,

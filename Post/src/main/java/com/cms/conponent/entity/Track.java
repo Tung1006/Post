@@ -1,5 +1,6 @@
 package com.cms.conponent.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
@@ -37,12 +38,17 @@ public class Track implements Serializable{
     @Column(length = 255, name = "USERID")
     private String userId;
 
-    @Column(length = 20, name = "POSTID")
-    private Long postId;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id", insertable = false, updatable = false)
+//    private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "postId", nullable = false)
+    @JsonIgnore
     private Post post;
+
+//    @Column(length = 20, name = "POSTID")
+//    private Long postId;
 
     public Track() {
     }
@@ -54,7 +60,7 @@ public class Track implements Serializable{
         clo.setTime(this.time);
         clo.setDescription(this.description);
         clo.setUserId(this.userId);
-        clo.setPostId(this.postId);
+//        clo.setPostId(this.postId);
         return clo;
     }
 

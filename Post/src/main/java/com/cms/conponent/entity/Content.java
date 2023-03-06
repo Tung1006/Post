@@ -1,10 +1,7 @@
-package com.cms.conponent.entity.join;
+package com.cms.conponent.entity;
 
-import com.cms.conponent.entity.Post;
-import com.cms.conponent.entity.User;
-import com.cms.conponent.entity.join.ForeignKey.ContentId;
-import com.cms.conponent.entity.join.ForeignKey.RelateId;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,22 +11,30 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-public class Content {
+@Getter
+@Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "Content")
+public class Content implements Serializable{
 
-    @EmbeddedId
-    ContentId id;
 
-    @ManyToOne
-    @MapsId("postId")
-    @JoinColumn(name = "postId",insertable = false,updatable = false)
-    Post post;
+    @GeneratedValue(generator = "ContentSeqGen")
+    @Id
+    @SequenceGenerator(allocationSize = 1, initialValue = 1, name = "ContentSeqGen", sequenceName = "Content_seq")
+    @Column(name = "ID")
+    private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "postId", nullable = false)
+    @JsonIgnore
+    private Post post;
 
     @Column(name = "CREATED")
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING, timezone = "Asia/Bangkok")
     private LocalDateTime created;
 
     @Column(length = 255, name = "CONTER")
+    @Lob
     private String conter;
 
     @Column(length = 11, name = "PRIORITY")
