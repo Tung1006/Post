@@ -1,11 +1,14 @@
 package com.cms.conponent.controller;
 
 import com.cms.common.ResponseBean;
+import com.cms.conponent.entity.Category;
 import com.cms.conponent.entity.Organization;
+import com.cms.conponent.entity.imports.OrganizationInput;
 import com.cms.conponent.service.OrganizationService;
 import com.cms.util.Constant;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,9 @@ public class OranizationController {
 
     @Autowired
     OrganizationService service;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("/getAll")
     @Operation(summary = "[Lấy tất cả danh sách Organization]")
@@ -63,11 +69,12 @@ public class OranizationController {
     @PostMapping("/add")
     @Operation(summary = "[Thêm mới một Organization]")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> add(@RequestBody @Valid Organization Organization) {
+    public ResponseEntity<Object> add(@RequestBody @Valid OrganizationInput organization) {
         ResponseBean resBean = new ResponseBean();
         resBean.setCode(HttpStatus.OK.toString());
         resBean.setMessage(Constant.SUCCESS);
-        resBean.setData(service.add(Organization));
+        Organization entity = modelMapper.map(organization, Organization.class);
+        resBean.setData(service.add(entity));
         return new ResponseEntity<>(resBean, HttpStatus.OK);
     }
 
@@ -75,11 +82,11 @@ public class OranizationController {
     @PostMapping("/addMany")
     @Operation(summary = "[Thêm nhiều Organization]")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> addMany(@RequestBody @Valid List<Organization> lstDto) {
+    public ResponseEntity<Object> addMany(@RequestBody @Valid List<OrganizationInput> lstDto) {
         if ((lstDto == null) || lstDto.isEmpty())
 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Empty list");
-        for (Organization dto : lstDto) {
+        for (OrganizationInput dto : lstDto) {
             add(dto);
 
         }
@@ -95,11 +102,12 @@ public class OranizationController {
     @PutMapping("/update")
     @Operation(summary = "[Cập nhật một Organization]")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> update(@RequestBody @Valid Organization organization) {
+    public ResponseEntity<Object> update(@RequestBody @Valid OrganizationInput organization) {
         ResponseBean resBean = new ResponseBean();
         resBean.setCode(HttpStatus.OK.toString());
         resBean.setMessage(Constant.SUCCESS);
-        resBean.setData(service.update(organization));
+        Organization entity = modelMapper.map(organization, Organization.class);
+        resBean.setData(service.update(entity));
         return new ResponseEntity<>(resBean, HttpStatus.OK);
     }
 

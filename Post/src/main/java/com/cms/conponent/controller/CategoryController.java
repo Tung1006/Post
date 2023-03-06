@@ -2,10 +2,13 @@ package com.cms.conponent.controller;
 
 import com.cms.common.ResponseBean;
 import com.cms.conponent.entity.Category;
+import com.cms.conponent.entity.Post;
+import com.cms.conponent.entity.imports.CategoryInput;
 import com.cms.conponent.service.CategoryService;
 import com.cms.util.Constant;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,9 @@ public class CategoryController {
 
     @Autowired
     CategoryService service;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("/getAll")
     @Operation(summary = "[Lấy tất cả danh sách Category]")
@@ -66,11 +72,12 @@ public class CategoryController {
     @PostMapping("/add")
     @Operation(summary = "[Thêm mới một Category]")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> add(@RequestBody @Valid Category category) {
+    public ResponseEntity<Object> add(@RequestBody @Valid CategoryInput category) {
         ResponseBean resBean = new ResponseBean();
         resBean.setCode(HttpStatus.OK.toString());
         resBean.setMessage(Constant.SUCCESS);
-        resBean.setData(service.add(category));
+        Category entity = modelMapper.map(category, Category.class);
+        resBean.setData(service.add(entity));
         return new ResponseEntity<>(resBean, HttpStatus.OK);
     }
 
@@ -78,11 +85,11 @@ public class CategoryController {
     @PostMapping("/addMany")
     @Operation(summary = "[Thêm nhiều Category]")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> addMany(@RequestBody @Valid List<Category> lstDto) {
+    public ResponseEntity<Object> addMany(@RequestBody @Valid List<CategoryInput> lstDto) {
         if ((lstDto == null) || lstDto.isEmpty())
 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Empty list");
-        for (Category dto : lstDto) {
+        for (CategoryInput dto : lstDto) {
             add(dto);
 
         }
@@ -98,11 +105,12 @@ public class CategoryController {
     @PutMapping("/update")
     @Operation(summary = "[Cập nhật một Category]")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> update(@RequestBody @Valid Category category) {
+    public ResponseEntity<Object> update(@RequestBody @Valid CategoryInput category) {
         ResponseBean resBean = new ResponseBean();
         resBean.setCode(HttpStatus.OK.toString());
         resBean.setMessage(Constant.SUCCESS);
-        resBean.setData(service.update(category));
+        Category entity = modelMapper.map(category, Category.class);
+        resBean.setData(service.update(entity));
         return new ResponseEntity<>(resBean, HttpStatus.OK);
     }
 

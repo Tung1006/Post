@@ -1,12 +1,17 @@
 package com.cms.conponent.entity;
 
 
+import com.cms.conponent.entity.join.Content;
+import com.cms.conponent.entity.join.Relate;
+import com.cms.conponent.entity.join.RelationShip;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -91,6 +96,18 @@ public class Post implements Serializable{
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
 //    @Column(insertable = false, updatable = false)
 //    private List<Content> contents;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    @Column(insertable = false, updatable = false)
+    Set<Relate> relate;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    @Column(insertable = false, updatable = false)
+    Set<Content> contents;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    @Column(insertable = false, updatable = false)
+    private List<Track> track;
 
 
 

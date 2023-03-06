@@ -1,5 +1,6 @@
 package com.cms.conponent.entity;
 
+import com.cms.conponent.entity.join.RelationShip;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -102,6 +104,13 @@ public class User implements Serializable {
 //    @OneToOne
 ////    @JoinColumn(name="USERID")
 //    private Post post;
+
+//    @OneToMany(mappedBy = "student")
+//    Set<CourseRating> ratings;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @Column(insertable = false, updatable = false)
+    Set<RelationShip> relationShips;
 
     public User() {
     }

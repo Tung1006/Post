@@ -1,13 +1,16 @@
 package com.cms.conponent.controller;
 
 import com.cms.common.ResponseBean;
+import com.cms.conponent.entity.Site;
 import com.cms.conponent.entity.Track;
 import com.cms.conponent.entity.Track;
+import com.cms.conponent.entity.imports.TrackInput;
 import com.cms.conponent.service.TrackService;
 import com.cms.conponent.service.TrackService;
 import com.cms.util.Constant;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,9 @@ public class TrackController {
 
     @Autowired
     TrackService service;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("/getAll")
     @Operation(summary = "[Lấy tất cả danh sách Track]")
@@ -62,21 +68,22 @@ public class TrackController {
     @PostMapping("/add")
     @Operation(summary = "[Thêm mới một Track]")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> add(@RequestBody @Valid Track track) {
+    public ResponseEntity<Object> add(@RequestBody @Valid TrackInput track) {
         ResponseBean resBean = new ResponseBean();
         resBean.setCode(HttpStatus.OK.toString());
         resBean.setMessage(Constant.SUCCESS);
-        resBean.setData(service.add(track));
+        Track entity = modelMapper.map(track, Track.class);
+        resBean.setData(service.add(entity));
         return new ResponseEntity<>(resBean, HttpStatus.OK);
     }
     @PostMapping("/addMany")
     @Operation(summary = "[Thêm nhiều Track]")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> addMany(@RequestBody @Valid List<Track> lstDto) {
+    public ResponseEntity<Object> addMany(@RequestBody @Valid List<TrackInput> lstDto) {
         if ((lstDto == null) || lstDto.isEmpty())
 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Empty list");
-        for (Track dto : lstDto) {
+        for (TrackInput dto : lstDto) {
             add(dto);
 
         }
@@ -92,11 +99,12 @@ public class TrackController {
     @PutMapping("/update")
     @Operation(summary = "[Cập nhật một Track]")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> update(@RequestBody @Valid Track track) {
+    public ResponseEntity<Object> update(@RequestBody @Valid TrackInput track) {
         ResponseBean resBean = new ResponseBean();
         resBean.setCode(HttpStatus.OK.toString());
         resBean.setMessage(Constant.SUCCESS);
-        resBean.setData(service.update(track));
+        Track entity = modelMapper.map(track, Track.class);
+        resBean.setData(service.update(entity));
         return new ResponseEntity<>(resBean, HttpStatus.OK);
     }
 

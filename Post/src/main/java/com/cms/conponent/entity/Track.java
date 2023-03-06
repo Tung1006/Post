@@ -40,6 +40,10 @@ public class Track implements Serializable{
     @Column(length = 20, name = "POSTID")
     private Long postId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", insertable = false, updatable = false)
+    private Post post;
+
     public Track() {
     }
 

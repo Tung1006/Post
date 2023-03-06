@@ -1,11 +1,14 @@
 package com.cms.conponent.entity;
 
+import com.cms.conponent.entity.join.Relate;
+import com.cms.conponent.entity.join.RelationShip;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -35,6 +38,14 @@ public class Site implements Serializable{
 
     @Column(length = 20, name = "PARNETID")
     private Long parnetId;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "site")
+    @Column(insertable = false, updatable = false)
+    Set<RelationShip> relationShips;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "site")
+    @Column(insertable = false, updatable = false)
+    Set<Relate> relate;
 
     public Site() {
     }

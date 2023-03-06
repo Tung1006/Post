@@ -1,11 +1,14 @@
 package com.cms.conponent.controller;
 
 import com.cms.common.ResponseBean;
+import com.cms.conponent.entity.Organization;
 import com.cms.conponent.entity.Site;
+import com.cms.conponent.entity.imports.SiteInput;
 import com.cms.conponent.service.SiteService;
 import com.cms.util.Constant;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,9 @@ public class SiteController {
 
     @Autowired
     SiteService service;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("/getAll")
     @Operation(summary = "[Lấy tất cả danh sách Site]")
@@ -65,11 +71,12 @@ public class SiteController {
     @PostMapping("/add")
     @Operation(summary = "[Thêm mới một Site]")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> add(@RequestBody @Valid Site Site) {
+    public ResponseEntity<Object> add(@RequestBody @Valid SiteInput site) {
         ResponseBean resBean = new ResponseBean();
         resBean.setCode(HttpStatus.OK.toString());
         resBean.setMessage(Constant.SUCCESS);
-        resBean.setData(service.add(Site));
+        Site entity = modelMapper.map(site, Site.class);
+        resBean.setData(service.add(entity));
         return new ResponseEntity<>(resBean, HttpStatus.OK);
     }
 
@@ -77,11 +84,11 @@ public class SiteController {
     @PostMapping("/addMany")
     @Operation(summary = "[Thêm nhiều Site]")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> addMany(@RequestBody @Valid List<Site> lstDto) {
+    public ResponseEntity<Object> addMany(@RequestBody @Valid List<SiteInput> lstDto) {
         if ((lstDto == null) || lstDto.isEmpty())
 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Empty list");
-        for (Site dto : lstDto) {
+        for (SiteInput dto : lstDto) {
             add(dto);
 
         }
@@ -97,11 +104,12 @@ public class SiteController {
     @PutMapping("/update")
     @Operation(summary = "[Cập nhật một Site]")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> update(@RequestBody @Valid Site site) {
+    public ResponseEntity<Object> update(@RequestBody @Valid SiteInput site) {
         ResponseBean resBean = new ResponseBean();
         resBean.setCode(HttpStatus.OK.toString());
         resBean.setMessage(Constant.SUCCESS);
-        resBean.setData(service.update(site));
+        Site entity = modelMapper.map(site, Site.class);
+        resBean.setData(service.update(entity));
         return new ResponseEntity<>(resBean, HttpStatus.OK);
     }
 

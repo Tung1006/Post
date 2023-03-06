@@ -2,10 +2,12 @@ package com.cms.conponent.controller;
 
 import com.cms.common.ResponseBean;
 import com.cms.conponent.entity.Post;
+import com.cms.conponent.entity.imports.PostInput;
 import com.cms.conponent.service.PostService;
 import com.cms.util.Constant;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -29,6 +31,9 @@ public class PostController {
 
     @Autowired
     PostService service;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("/getAll")
     @Operation(summary = "[Lấy tất cả danh sách Post]")
@@ -115,11 +120,12 @@ public class PostController {
     @PostMapping("/add")
     @Operation(summary = "[Thêm mới một Post]")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> add(@RequestBody @Valid Post post) {
+    public ResponseEntity<Object> add(@RequestBody @Valid PostInput post) {
         ResponseBean resBean = new ResponseBean();
         resBean.setCode(HttpStatus.OK.toString());
         resBean.setMessage(Constant.SUCCESS);
-        resBean.setData(service.add(post));
+        Post entity = modelMapper.map(post, Post.class);
+        resBean.setData(service.add(entity));
         return new ResponseEntity<>(resBean, HttpStatus.OK);
     }
 
@@ -127,11 +133,11 @@ public class PostController {
     @PostMapping("/addMany")
     @Operation(summary = "[Thêm nhiều Post]")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> addMany(@RequestBody @Valid List<Post> lstDto) {
+    public ResponseEntity<Object> addMany(@RequestBody @Valid List<PostInput> lstDto) {
         if ((lstDto == null) || lstDto.isEmpty())
 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Empty list");
-        for (Post dto : lstDto) {
+        for (PostInput dto : lstDto) {
             add(dto);
 
         }
@@ -147,11 +153,12 @@ public class PostController {
     @PutMapping("/update")
     @Operation(summary = "[Cập nhật một Post]")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> update(@RequestBody @Valid Post post) {
+    public ResponseEntity<Object> update(@RequestBody @Valid PostInput post) {
         ResponseBean resBean = new ResponseBean();
         resBean.setCode(HttpStatus.OK.toString());
         resBean.setMessage(Constant.SUCCESS);
-        resBean.setData(service.update(post));
+        Post entity = modelMapper.map(post, Post.class);
+        resBean.setData(service.update(entity));
         return new ResponseEntity<>(resBean, HttpStatus.OK);
     }
 
