@@ -1,6 +1,6 @@
 package com.cms.component.content;
 
-import com.cms.component.post.PostEntity;
+import com.cms.component.post.entity.PostEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -23,8 +23,8 @@ public class ContentEntity implements Serializable{
     @GeneratedValue(generator = "ContentSeqGen")
     @Id
     @SequenceGenerator(allocationSize = 1, initialValue = 1, name = "ContentSeqGen", sequenceName = "Content_seq")
-    @Column(name = "ID")
-    private Long id;
+    @Column(name = "contentId")
+    private Long contentId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "postId", nullable = false)

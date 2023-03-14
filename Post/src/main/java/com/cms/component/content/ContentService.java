@@ -1,7 +1,5 @@
 package com.cms.component.content;
 
-import com.cms.component.post.PostEntity;
-import com.cms.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,9 +60,9 @@ public class ContentService {
     }
 
     public ContentEntity update(ContentEntity content){
-        ContentEntity entity = repository.getOne(content.getId());
+        ContentEntity entity = repository.getOne(content.getContentId());
         if(entity == null){
-            log.info("Not-found-with-id: "  + content.getId());
+            log.info("Not-found-with-id: "  + content.getContentId());
         }else {
             content.setCreated(entity.getCreated());
             content.setStatus(true);

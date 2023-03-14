@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrganizationInput {
-    private long id;
+    private long organizationId;
     private String code;
     private String name;
     private Long priority;

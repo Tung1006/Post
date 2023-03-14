@@ -1,28 +1,29 @@
 package com.cms.component.organization;
 
 
-import com.cms.component.acc.RelationShip;
+import com.cms.component.relationShip.RelationShip;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Getter
 @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "Organization")
-public class Organization implements Serializable{
+public class OrganizationEntity implements Serializable{
 
 
     @GeneratedValue(generator = "OrganizationSeqGen")
     @Id
     @SequenceGenerator(allocationSize = 1, initialValue = 1, name = "OrganizationSeqGen", sequenceName = "Organization_seq")
-    @Column(name = "ID")
-    private long id;
+    @Column(name = "organizationId")
+    private long organizationId;
 
     @Column(length = 26, name = "CODE")
     private String code;
@@ -42,17 +43,20 @@ public class Organization implements Serializable{
 //    @OneToMany(mappedBy = "organization")
 ////    Set<RelationShip> relationShips;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organization")
-    @Column(insertable = false, updatable = false)
-    Set<RelationShip> relationShips;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organization")
+//    @Column(insertable = false, updatable = false)
+//    Set<RelationShip> relationShips;
 
-    public Organization() {
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+    private Collection<RelationShip> relationShips = new ArrayList<>();
+
+    public OrganizationEntity() {
     }
 
 
-    public Organization clone() {
-        Organization clo = new Organization();
-        clo.setId(this.id);
+    public OrganizationEntity clone() {
+        OrganizationEntity clo = new OrganizationEntity();
+        clo.setOrganizationId(this.organizationId);
         clo.setCode(this.code);
         clo.setName(this.name);
         clo.setDescription(this.description);

@@ -1,10 +1,10 @@
 package com.cms.component.relate;
 
 import com.cms.component.category.CategoryEntity;
-import com.cms.component.post.PostEntity;
-import com.cms.component.site.Site;
-import lombok.Getter;
-import lombok.Setter;
+import com.cms.component.post.entity.PostEntity;
+import com.cms.component.site.SiteEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -14,21 +14,22 @@ import javax.persistence.*;
 public class Relate {
 
     @EmbeddedId
-    RelateId id;
+    private RelateId id = new RelateId();
 
     @ManyToOne
     @MapsId("catId")
-    @JoinColumn(name = "catId",insertable = false,updatable = false)
-    CategoryEntity category;
+    @JoinColumn(name = "category_Id")
+    private CategoryEntity category;
 
     @ManyToOne
     @MapsId("siteId")
-    @JoinColumn(name = "siteId",insertable = false,updatable = false)
-    Site site;
+    @JoinColumn(name = "site_Id")
+    private SiteEntity site;
 
     @ManyToOne
     @MapsId("postId")
-    @JoinColumn(name = "postId",insertable = false,updatable = false)
-    PostEntity post;
+    @JoinColumn(name = "post_Id")
+    @JsonIgnore
+    private PostEntity post;
 
 }

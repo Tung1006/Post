@@ -2,7 +2,7 @@ package com.cms.component.site;
 
 public interface SiteDto {
 
-    long getId() ;
+    long getSiteId() ;
 
 
     String getCode() ;

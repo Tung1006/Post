@@ -2,7 +2,7 @@ package com.cms.component.track;
 
 public interface TrackDto {
 
-    long getId() ;
+    long getTrackId() ;
 
 
     String getType() ;

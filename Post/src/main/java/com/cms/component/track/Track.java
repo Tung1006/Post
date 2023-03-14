@@ -1,5 +1,5 @@
 package com.cms.component.track;
-import com.cms.component.post.PostEntity;
+import com.cms.component.post.entity.PostEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -20,8 +20,8 @@ public class Track implements Serializable{
     @GeneratedValue(generator = "TrackSeqGen")
     @Id
     @SequenceGenerator(allocationSize = 1, initialValue = 1, name = "TrackSeqGen", sequenceName = "Track_seq")
-    @Column(name = "ID")
-    private long id;
+    @Column(name = "trackId")
+    private long trackId;
 
     @Column(length = 26, name = "TYPE")
     private String type;
@@ -52,7 +52,7 @@ public class Track implements Serializable{
 
     public Track Clone(){
         Track clo = new Track();
-        clo.setId(this.id);
+        clo.setTrackId(this.trackId);
         clo.setType(this.type);
         clo.setTime(this.time);
         clo.setDescription(this.description);

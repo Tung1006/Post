@@ -19,7 +19,7 @@ public class SiteService {
     @Autowired
     SiteRepository repository;
 
-    public List<Site> findAll() {
+    public List<SiteEntity> findAll() {
         return repository.findAll();
     }
     public Page<SiteDto> findBy(Integer page, Integer size, String[] textSort, Long id, String code, String name, Long parnetId) {
@@ -29,8 +29,8 @@ public class SiteService {
     }
 
 
-    public Site findById(long id) {
-        Site entity = repository.getOne(id);
+    public SiteEntity findById(long id) {
+        SiteEntity entity = repository.getOne(id);
 
         if (entity == null)
 
@@ -41,7 +41,7 @@ public class SiteService {
 
 
 
-    public Site  add(Site site){
+    public SiteEntity add(SiteEntity site){
         site= repository.save(site);
         log.info("Add " + "Site " + site);
 
@@ -49,10 +49,10 @@ public class SiteService {
 
     }
 
-    public Site  update(Site site){
-        Site entity = repository.getOne(site.getId());
+    public SiteEntity update(SiteEntity site){
+        SiteEntity entity = repository.getOne(site.getSiteId());
         if(entity == null){
-            log.info("Not-found-with-id: "  + site.getId());
+            log.info("Not-found-with-id: "  + site.getSiteId());
         }else {
             site= repository.save(site);
 
@@ -62,8 +62,8 @@ public class SiteService {
         return site;
 
     }
-    public Site deleteById(long id){
-        Site entity = repository.getOne(id);
+    public SiteEntity deleteById(long id){
+        SiteEntity entity = repository.getOne(id);
         if(entity == null){
             log.info("Not-found-with-id: "  + id);
         }else {

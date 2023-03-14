@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SiteInput {
-    private long id;
+    private long siteId;
     private String code;
     private String name;
     private String language;

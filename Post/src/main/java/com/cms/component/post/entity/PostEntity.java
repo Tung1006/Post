@@ -1,17 +1,19 @@
-package com.cms.component.post;
+package com.cms.component.post.entity;
 
 
 import com.cms.component.content.ContentEntity;
 import com.cms.component.track.Track;
 import com.cms.component.relate.Relate;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.*;
 
@@ -29,8 +31,8 @@ public class PostEntity implements Serializable{
     @GeneratedValue(generator = "PostSeqGen")
     @Id
     @SequenceGenerator(allocationSize = 1, initialValue = 1, name = "PostSeqGen", sequenceName = "Post_seq")
-    @Column(name = "ID")
-    private long id;
+    @Column(name = "postId")
+    private long postId;
 
     @Column(length = 36, name = "CODE")
     private String code;
@@ -93,9 +95,12 @@ public class PostEntity implements Serializable{
     @Column(name = "userId")
     private Long userId;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
-    @Column(insertable = false, updatable = false)
-    Set<Relate> relate;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+//    @Column(insertable = false, updatable = false)
+//    Set<Relate> relate;
+    @JsonIgnore
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private Collection<Relate> relate = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     @Column(insertable = false, updatable = false)
@@ -115,7 +120,7 @@ public class PostEntity implements Serializable{
 
     public PostEntity clone() {
         PostEntity clo = new PostEntity();
-        clo.setId(this.id);
+        clo.setPostId(this.postId);
         clo.setCode(this.code);
         clo.setTitle(this.title);
         clo.setSpecial(this.special);
