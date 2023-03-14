@@ -1,7 +1,5 @@
 package com.cms.component.content;
 
-import com.cms.component.post.PostDto;
-import com.cms.component.post.PostEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package com.cms.component.post;
+package com.cms.component.post.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class PostInput {
-    private long id;
+    private long postId;
     private String code;
     private String title;
     private String special;
@@ -31,13 +31,18 @@ public class PostInput {
     private String tag;
     private Long userId;
 
+    private Long siteId;
+
+
+    private Long categoryId;
+
+
     public PostInput() {
     }
 
-
     public PostInput clone() {
         PostInput clo = new PostInput();
-        clo.setId(this.id);
+        clo.setPostId(this.postId);
         clo.setCode(this.code);
         clo.setTitle(this.title);
         clo.setSpecial(this.special);
@@ -48,10 +53,12 @@ public class PostInput {
         clo.setPriority(this.priority);
         clo.setRepresent(this.represent);
         clo.setCreated(this.created);
-//        clo.setUserId(this.userId);
+        clo.setUserId(this.userId);
         clo.setUpdated(this.updated);
         clo.setCounter(this.counter);
         clo.setTag(this.tag);
+        clo.setSiteId(this.siteId);
+        clo.setCategoryId(this.categoryId);
         return  clo;
     }
 }

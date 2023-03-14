@@ -1,5 +1,6 @@
 package com.cms.component.acc;
 
+import com.cms.component.relationShip.RelationShip;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -105,9 +106,9 @@ public class User implements Serializable {
 //    @OneToMany(mappedBy = "student")
 //    Set<CourseRating> ratings;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    @Column(insertable = false, updatable = false)
-    Set<RelationShip> relationShips;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+//    @Column(insertable = false, updatable = false)
+//    Set<RelationShip> relationShips;
 
     public User() {
     }

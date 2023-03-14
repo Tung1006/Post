@@ -2,7 +2,7 @@ package com.cms.component.organization;
 
 public interface OrganizationDto {
 
-    long getId() ;
+    long getOrganizationId() ;
 
 
     String getCode() ;

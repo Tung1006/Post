@@ -2,7 +2,7 @@ package com.cms.component.category;
 
 public interface CategoryDto {
 
-    long getId() ;
+    long getCategoryId() ;
 
 
     String getCode()  ;

@@ -1,5 +1,4 @@
-package com.cms.component.acc;
-
+package com.cms.component.relationShip;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

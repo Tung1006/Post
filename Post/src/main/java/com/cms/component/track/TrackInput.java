@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TrackInput {
-    private long id;
+    private long trackId;
     private String type;
     private String time;
     private String description;

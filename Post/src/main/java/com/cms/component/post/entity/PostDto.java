@@ -1,4 +1,4 @@
-package com.cms.component.post;
+package com.cms.component.post.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public interface PostDto {
 
-    long getId() ;
+    long getPostId() ;
 
 
     String getCode() ;

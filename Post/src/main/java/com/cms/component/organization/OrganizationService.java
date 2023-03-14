@@ -19,7 +19,7 @@ public class OrganizationService {
     @Autowired
     OrganizationRepository repository;
 
-    public List<Organization> findAll() {
+    public List<OrganizationEntity> findAll() {
         return repository.findAll();
     }
 
@@ -30,8 +30,8 @@ public class OrganizationService {
     }
 
 
-    public Organization findById(long id) {
-        Organization entity = repository.getOne(id);
+    public OrganizationEntity findById(long id) {
+        OrganizationEntity entity = repository.getOne(id);
 
         if (entity == null)
 
@@ -40,7 +40,7 @@ public class OrganizationService {
         return entity;
     }
 
-    public Organization  add(Organization organization){
+    public OrganizationEntity add(OrganizationEntity organization){
 
         organization= repository.save(organization);
         log.info("Add " + "Organization " + organization);
@@ -49,10 +49,10 @@ public class OrganizationService {
 
     }
 
-    public Organization  update(Organization organization){
-        Organization entity = repository.getOne(organization.getId());
+    public OrganizationEntity update(OrganizationEntity organization){
+        OrganizationEntity entity = repository.getOne(organization.getOrganizationId());
         if(entity == null){
-            log.info("Not-found-with-id: "  + organization.getId());
+            log.info("Not-found-with-id: "  + organization.getOrganizationId());
         }else {
             organization= repository.save(organization);
 
@@ -62,8 +62,8 @@ public class OrganizationService {
         return organization;
 
     }
-    public Organization deleteById(long id){
-        Organization entity = repository.getOne(id);
+    public OrganizationEntity deleteById(long id){
+        OrganizationEntity entity = repository.getOne(id);
         if(entity == null){
             log.info("Not-found-with-id: "  + id);
         }else {

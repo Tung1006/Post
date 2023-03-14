@@ -48,9 +48,9 @@ public class CategoryService {
     }
 
     public CategoryEntity update(CategoryEntity category){
-        CategoryEntity entity = repository.getOne(category.getId());
+        CategoryEntity entity = repository.getOne(category.getCategoryId());
         if(entity == null){
-            log.info("Not-found-with-id: "  + category.getId());
+            log.info("Not-found-with-id: "  + category.getCategoryId());
         }else {
             category= repository.save(category);
 

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CategoryInput {
-    private long id;
+    private long categoryId;
     private String code;
     private String name;
     private Boolean status = false ;

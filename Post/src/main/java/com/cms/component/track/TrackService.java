@@ -49,9 +49,9 @@ public Track findById(long id) {
     }
 
     public Track  update(Track track){
-        Track entity = repository.getOne(track.getId());
+        Track entity = repository.getOne(track.getTrackId());
         if(entity == null){
-            log.info("Not-found-with-id: "  + track.getId());
+            log.info("Not-found-with-id: "  + track.getTrackId());
         }else {
 
             track= repository.save(track);

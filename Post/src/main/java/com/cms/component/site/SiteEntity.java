@@ -1,27 +1,29 @@
 package com.cms.component.site;
 
 import com.cms.component.relate.Relate;
-import com.cms.component.acc.RelationShip;
+import com.cms.component.relationShip.RelationShip;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Getter
 @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "Site")
-public class Site implements Serializable{
+public class SiteEntity implements Serializable{
 
     @GeneratedValue(generator = "SiteSeqGen")
     @Id
     @SequenceGenerator(allocationSize = 1, initialValue = 1, name = "SiteSeqGen", sequenceName = "Site_seq")
-    @Column(name = "ID")
-    private long id;
+    @Column(name = "siteId")
+    private long siteId;
 
 
     @Column(length = 26, name = "CODE")
@@ -39,20 +41,21 @@ public class Site implements Serializable{
     @Column(length = 20, name = "PARNETID")
     private Long parnetId;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "site")
-    @Column(insertable = false, updatable = false)
-    Set<RelationShip> relationShips;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "site")
-    @Column(insertable = false, updatable = false)
-    Set<Relate> relate;
+    @JsonIgnore
+    @OneToMany(mappedBy = "site", cascade = CascadeType.ALL)
+    private Collection<RelationShip> relationShips = new ArrayList<>();
 
-    public Site() {
+    @JsonIgnore
+    @OneToMany(mappedBy = "site", cascade = CascadeType.ALL)
+    private Collection<Relate> relate = new ArrayList<>();
+
+    public SiteEntity() {
     }
 
-    public Site Clone(){
-        Site clo = new Site();
-        clo.setId(this.id);
+    public SiteEntity Clone(){
+        SiteEntity clo = new SiteEntity();
+        clo.setSiteId(this.siteId);
         clo.setCode(this.code);
         clo.setName(this.name);
         clo.setDescription(this.description);

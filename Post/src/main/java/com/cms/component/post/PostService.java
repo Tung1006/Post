@@ -1,8 +1,18 @@
 package com.cms.component.post;
 
-import com.cms.component.content.ContentEntity;
+import com.cms.component.category.CategoryEntity;
+import com.cms.component.category.CategoryService;
 import com.cms.component.content.ContentRepository;
+import com.cms.component.post.entity.PostDto;
+import com.cms.component.post.entity.PostEntity;
+import com.cms.component.post.entity.PostEntityDto;
+import com.cms.component.post.entity.PostInput;
+import com.cms.component.relate.Relate;
+import com.cms.component.relate.RelateRepository;
+import com.cms.component.site.SiteEntity;
+import com.cms.component.site.SiteService;
 import com.cms.util.StringUtil;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,11 +37,24 @@ public class PostService {
     @Autowired
     ContentRepository contentrepository;
 
+    @Autowired
+    private SiteService siteService;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private RelateRepository relateRepository;
+
+
+    @Autowired
+    private ModelMapper modelMapper;
+
     public List<PostEntity> findAll() {
         return repository.findAll();
     }
 
-    public Page<PostEntity> findAllBy(int page, int size, String sort, String column) {
+    public ArrayList<PostEntityDto> find(int page, int size, String sort, String column, String keyword) {
 
         Sort sortable = null;
         if (sort.equals("ASC")) {
@@ -41,7 +64,31 @@ public class PostService {
             sortable = Sort.by(column).descending();
         }
         Pageable pageable = PageRequest.of(page, size, sortable);
-        return repository.getPaging(pageable);
+
+        Page<PostEntity>  a = repository.getPaging(pageable,keyword);
+        ArrayList<PostEntityDto> list = new ArrayList<PostEntityDto>();
+        for (PostEntity dto: a){
+            PostEntityDto postEntityDto = new PostEntityDto();
+            postEntityDto.setPost(dto);
+            List<Relate> b = relateRepository.findBy(null,null,dto.getPostId());
+            postEntityDto.setRelates(b);
+            list.add(postEntityDto);
+        }
+        return list;
+    }
+
+
+    public Page<PostEntity> findAllBy(int page, int size, String sort, String column, String keyword) {
+
+        Sort sortable = null;
+        if (sort.equals("ASC")) {
+            sortable = Sort.by(column).ascending();
+        }
+        if (sort.equals("DESC")) {
+            sortable = Sort.by(column).descending();
+        }
+        Pageable pageable = PageRequest.of(page, size, sortable);
+        return repository.getPaging(pageable,keyword);
     }
 
 
@@ -77,7 +124,7 @@ public class PostService {
 
     public PostEntity Clone(long id) {
         PostEntity entity = repository.getOne(id);
-        System.out.println("hihi: " + entity.getId());
+        System.out.println("hihi: " + entity.getPostId());
 
 
         if (entity == null) {
@@ -86,7 +133,7 @@ public class PostService {
         } else {
 
             PostEntity post = entity.clone();
-            post.setId(0L);
+            post.setPostId(0L);
             post.setCreated(LocalDateTime.now());
             post= repository.save(post);
             return post;
@@ -96,26 +143,55 @@ public class PostService {
         return entity;
     }
 
-
-
-
-
     public PostEntity add(PostEntity post){
         post.setCreated(LocalDateTime.now());
         post.setStatus(true);
-//        post.setAuthor(Constant.COLOR[Constant.COLOR1[1]]);
-//        post.setStatus();
-        post= repository.save(post);
+
+
+        repository.save(post);
         log.info("Add " + "Post " + post);
-
         return post;
-
     }
 
+
+    public PostEntity addCustomer(PostInput post){
+        System.out.println("S post: " + post);
+        PostInput newPost = post.clone();
+        newPost.setCreated(LocalDateTime.now());
+        newPost.setStatus(true);
+        PostEntity entity = modelMapper.map(newPost, PostEntity.class);
+
+
+        repository.save(entity);
+        try {
+            Relate relate = new Relate();
+            relate.setPost(entity);
+            SiteEntity site = siteService.findById(post.getSiteId());
+            CategoryEntity category = categoryService.findById(post.getCategoryId());
+            if(site == null ){
+
+                }else {
+                    relate.setSite(site);
+                    if(category == null){
+
+                    }else {
+
+                    relate.setCategory(category);
+
+                        relateRepository.save(relate);
+                    }
+                }
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+        log.info("Add " + "Post " + post);
+        return entity;
+    }
     public PostEntity update(PostEntity post){
-        PostEntity entity = repository.getOne(post.getId());
+        PostEntity entity = repository.getOne(post.getPostId());
         if(entity == null){
-            log.info("Not-found-with-id: "  + post.getId());
+            log.info("Not-found-with-id: "  + post.getPostId());
         }else {
         post.setCreated(entity.getCreated());
         post.setUpdated(LocalDateTime.now());
@@ -148,7 +224,7 @@ public class PostService {
             entity.setUpdated(LocalDateTime.now());
 
             repository.save(entity);
-            log.info("Not-found-with-id: "  + entity.getId());
+            log.info("Not-found-with-id: "  + entity.getPostId());
         }
 
         return entity;
@@ -158,7 +234,7 @@ public class PostService {
 
 
         if(post == null){
-            log.info("Not-found-with-id: "  + post.getId());
+            log.info("Not-found-with-id: "  + post.getPostId());
         }else {
             post.setUpdated(LocalDateTime.now());
             post.setStatus(false);

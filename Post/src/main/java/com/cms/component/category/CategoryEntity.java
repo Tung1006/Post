@@ -2,14 +2,16 @@ package com.cms.component.category;
 
 
 import com.cms.component.relate.Relate;
-import com.cms.component.acc.RelationShip;
+import com.cms.component.relationShip.RelationShip;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Getter
@@ -22,8 +24,8 @@ public class CategoryEntity implements Serializable{
     @GeneratedValue(generator = "CategorySeqGen")
     @Id
     @SequenceGenerator(allocationSize = 1, initialValue = 1, name = "CategorySeqGen", sequenceName = "Category_seq")
-    @Column(name = "ID")
-    private long id;
+    @Column(name = "categoryId")
+    private long categoryId;
 
     @Column(length = 26, name = "CODE")
     private String code;
@@ -58,13 +60,13 @@ public class CategoryEntity implements Serializable{
     @Column(length = 20, name = "PARTNERID")
     private Long partnerId;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
-    @Column(insertable = false, updatable = false)
-    Set<RelationShip> relationShips;
+    @JsonIgnore
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private Collection<RelationShip> relationShips = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
-    @Column(insertable = false, updatable = false)
-    Set<Relate> relate;
+    @JsonIgnore
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private Collection<Relate> relate = new ArrayList<>();
 
     public CategoryEntity() {
     }
@@ -72,7 +74,7 @@ public class CategoryEntity implements Serializable{
 
     public CategoryEntity clone() {
         CategoryEntity clo = new CategoryEntity();
-        clo.setId(this.id);
+        clo.setCategoryId(this.categoryId);
         clo.setCode(this.code);
         clo.setName(this.name);
         clo.setDescription(this.description);
